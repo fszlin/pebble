@@ -95,11 +95,17 @@ func main() {
 	if c.Pebble.ManagementListenAddress != "" {
 		go func() {
 			adminHandler := wfeImpl.ManagementHandler()
-			err = http.ListenAndServeTLS(
-				c.Pebble.ManagementListenAddress,
-				c.Pebble.Certificate,
-				c.Pebble.PrivateKey,
-				adminHandler)
+			if c.Pebble.Certificate != "" {
+				err = http.ListenAndServeTLS(
+					c.Pebble.ManagementListenAddress,
+					c.Pebble.Certificate,
+					c.Pebble.PrivateKey,
+					adminHandler)
+			} else {
+				err = http.ListenAndServe(
+					c.Pebble.ManagementListenAddress,
+					adminHandler)
+			}
 			cmd.FailOnError(err, "Calling ListenAndServeTLS() for admin interface")
 		}()
 		logger.Printf("Management interface listening on: %s\n", c.Pebble.ManagementListenAddress)
@@ -114,12 +120,21 @@ func main() {
 	}
 
 	logger.Printf("Listening on: %s\n", c.Pebble.ListenAddress)
-	logger.Printf("ACME directory available at: https://%s%s",
-		c.Pebble.ListenAddress, wfe.DirectoryPath)
-	err = http.ListenAndServeTLS(
-		c.Pebble.ListenAddress,
-		c.Pebble.Certificate,
-		c.Pebble.PrivateKey,
-		muxHandler)
-	cmd.FailOnError(err, "Calling ListenAndServeTLS()")
+		
+	if c.Pebble.Certificate != "" {
+		logger.Printf("ACME directory available at: https://%s%s",
+			c.Pebble.ListenAddress, wfe.DirectoryPath)
+		err = http.ListenAndServeTLS(
+			c.Pebble.ListenAddress,
+			c.Pebble.Certificate,
+			c.Pebble.PrivateKey,
+			muxHandler)
+	} else {
+		logger.Printf("ACME directory available at: http://%s%s",
+			c.Pebble.ListenAddress, wfe.DirectoryPath)
+		err = http.ListenAndServe(
+			c.Pebble.ListenAddress,
+			muxHandler)
+	}
+	cmd.FailOnError(err, "Calling ListenAndServe()")
 }
