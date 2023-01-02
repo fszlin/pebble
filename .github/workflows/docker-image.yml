@@ -4,8 +4,8 @@ on:
   push:
     branches: ["az-appsvc"]
 
-# permissions:
-#   packages: write
+permissions:
+  packages: write
 
 env:
   REGISTRY: ghcr.io
