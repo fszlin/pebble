@@ -1,0 +1,14 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: ["az-appsvc"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build the Docker image
+        run: docker build . --file "docker/pebble/linux.Dockerfile" --tag pebble:$(date +%s) --tag pebble:latest
