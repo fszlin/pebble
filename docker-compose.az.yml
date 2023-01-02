@@ -1,7 +1,7 @@
 version: '3'
 services:
   pebble:
-    image: fszlin/pebble:latest
+    image: ghcr.io/fszlin/pebble:az-appsvc
     command: pebble -config /test/config/pebble-config-az.json -strict
     ports:
       - "14000:14000" # HTTP ACME API
