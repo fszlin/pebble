@@ -23,4 +23,3 @@ jobs:
           file: docker/pebble/linux.Dockerfile
           tags: |
             fszlin/pebble:latest
-            fszlin/pebble:$(date +%s)
