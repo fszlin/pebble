@@ -38,3 +38,19 @@ jobs:
           tags: |
             ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: metaNginx
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/pebble-nginx
+
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          file: docker/pebble-nginx/linux.Dockerfile
+          context: .
+          push: true
+          tags: |
+            ${{ steps.metaNginx.outputs.tags }}
+          labels: ${{ steps.metaNginx.outputs.labels }}
