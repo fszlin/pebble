@@ -921,6 +921,12 @@ func (wfe *WebFrontEndImpl) verifyJWS(
 		Host:   request.Host,
 		Path:   request.RequestURI,
 	}
+
+	// For local http testeing
+	if request.TLS == nil {
+		expectedURL.Scheme = "http"
+	}
+
 	if expectedURL.String() != headerURL {
 		return nil, acme.MalformedProblem(fmt.Sprintf(
 			"JWS header parameter 'url' incorrect. Expected %q, got %q",
