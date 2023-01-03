@@ -1,3 +1,5 @@
+# docker compose -f .\docker-compose.az.yml up
+
 version: '3'
 services:
   pebble:
