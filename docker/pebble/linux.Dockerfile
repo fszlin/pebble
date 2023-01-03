@@ -10,6 +10,8 @@ RUN go build -o /go/bin/pebble ./cmd/pebble
 ## main
 FROM alpine:3.15.4
 
+RUN apk --no-cache add tzdata
+
 COPY --from=builder /go/bin/pebble /usr/bin/pebble
 COPY --from=builder /pebble-src/test/ /test/
 
