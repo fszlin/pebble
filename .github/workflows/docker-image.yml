@@ -43,7 +43,7 @@ jobs:
         id: metaNginx
         uses: docker/metadata-action@v4
         with:
-          images: ${{ env.REGISTRY }}/pebble-nginx
+          images: ${{ env.REGISTRY }}/fszlin/pebble-nginx
 
       - name: Build and push
         uses: docker/build-push-action@v3
